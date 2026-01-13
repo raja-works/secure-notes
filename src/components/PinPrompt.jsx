@@ -55,6 +55,8 @@ const Message = styled.p`
 const PasswordInput = styled.input`
   ${({ theme }) => theme.glass.input};
   width: 100%;
+  box-sizing: border-box;
+  display: block;
   padding: 16px;
   font-size: 1.2rem;
   text-align: center;
@@ -84,62 +86,62 @@ const Button = styled.button`
 `;
 
 export default function PinPrompt({ onSuccess, onCancel, message = "Enter PIN to access." }) {
-    const { state } = useStore();
-    const [pin, setPin] = useState('');
-    const [error, setError] = useState('');
+  const { state } = useStore();
+  const [pin, setPin] = useState('');
+  const [error, setError] = useState('');
 
-    const handleSubmit = () => {
-        if (!pin) return;
+  const handleSubmit = () => {
+    if (!pin) return;
 
-        const hashed = hashPin(pin);
+    const hashed = hashPin(pin);
 
-        // Verify against global stored hash
-        if (state.pinHash && state.pinHash !== hashed) {
-            setError('Incorrect PIN/Password');
-            return;
-        }
+    // Verify against global stored hash
+    if (state.pinHash && state.pinHash !== hashed) {
+      setError('Incorrect PIN/Password');
+      return;
+    }
 
-        if (state.globalPin && state.globalPin !== pin) {
-            setError('Incorrect PIN/Password');
-            return;
-        }
+    if (state.globalPin && state.globalPin !== pin) {
+      setError('Incorrect PIN/Password');
+      return;
+    }
 
-        onSuccess();
-    };
+    onSuccess();
+  };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            handleSubmit();
-        }
-    };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  };
 
-    return (
-        <Overlay
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-        >
-            <Card onClick={e => e.stopPropagation()}>
-                <IconWrapper>
-                    <FaLock />
-                </IconWrapper>
-                <Title>Restricted Access</Title>
-                <Message>{error || message}</Message>
+  return (
+    <Overlay
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <Card onClick={e => e.stopPropagation()}>
+        <IconWrapper>
+          <FaLock />
+        </IconWrapper>
+        <Title>Restricted Access</Title>
+        <Message>{error || message}</Message>
 
-                <PasswordInput
-                    type="password"
-                    value={pin}
-                    onChange={e => setPin(e.target.value)}
-                    placeholder="Enter PIN/Password"
-                    autoFocus
-                    onKeyDown={handleKeyDown}
-                />
+        <PasswordInput
+          type="password"
+          value={pin}
+          onChange={e => setPin(e.target.value)}
+          placeholder="Enter PIN/Password"
+          autoFocus
+          onKeyDown={handleKeyDown}
+        />
 
-                <ButtonGroup>
-                    <Button secondary onClick={onCancel}>Cancel</Button>
-                    <Button onClick={handleSubmit}>Unlock</Button>
-                </ButtonGroup>
-            </Card>
-        </Overlay>
-    );
+        <ButtonGroup>
+          <Button secondary onClick={onCancel}>Cancel</Button>
+          <Button onClick={handleSubmit}>Unlock</Button>
+        </ButtonGroup>
+      </Card>
+    </Overlay>
+  );
 }

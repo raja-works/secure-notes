@@ -54,6 +54,8 @@ const Message = styled.p`
 const PasswordInput = styled.input`
   ${({ theme }) => theme.glass.input};
   width: 100%;
+  box-sizing: border-box;
+  display: block;
   padding: 16px;
   font-size: 1.2rem;
   text-align: center;

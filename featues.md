@@ -18,3 +18,8 @@ General improvements:
 2. give an option to switch the fonts in the header bar.
 3. give a theme dark and light mode, users should be able to switch between dark and light mode.
 4. instead of the asking the user with a dialog box(ok, cancel), create a custom dialog box with separate button for choose sketch or text
+
+minor updates:
+1. clicking the cursor outside the note editor, makes the note makes note not saved.  implement auto save which applies to sketch also
+2. implement the pointer tip to realise the brush size
+
