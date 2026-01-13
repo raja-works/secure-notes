@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/secure-notes/sw.js', { scope: '/secure-notes/' })})}
