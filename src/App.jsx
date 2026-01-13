@@ -75,6 +75,10 @@ function App() {
     // Only search content if NOT locked
     const contentMatch = !note.isLocked && typeof note.content === 'string' && note.content.toLowerCase().includes(q);
     return note.title.toLowerCase().includes(q) || contentMatch;
+  }).sort((a, b) => {
+    const timeA = new Date(a.updatedAt || a.createdAt).getTime();
+    const timeB = new Date(b.updatedAt || b.createdAt).getTime();
+    return timeB - timeA;
   });
 
   const handleAddNoteClick = () => {

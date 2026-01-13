@@ -137,13 +137,10 @@ export default function NoteCard({ note, onClick }) {
             )}
 
             <Meta>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.75rem' }}>
-                    <TypeIcon>
-                        {isInk ? <FaPen size={12} /> : <FaFileAlt size={12} />}
-                        <span>Updated: {new Date(note.updatedAt).toLocaleString()}</span>
-                    </TypeIcon>
-                    <span style={{ opacity: 0.7, paddingLeft: '18px' }}>
-                        Created: {new Date(note.createdAt).toLocaleString()}
+                <div style={{ display: 'flex', gap: '6px', alignItems: 'center', fontSize: '0.75rem' }}>
+                    {isInk ? <FaPen size={12} /> : <FaFileAlt size={12} />}
+                    <span>
+                        {new Date(note.updatedAt || note.createdAt).toLocaleString()}
                     </span>
                 </div>
                 {!note.isLocked && (
