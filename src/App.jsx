@@ -2,7 +2,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { useState, useMemo } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { FaStickyNote } from 'react-icons/fa';
-import { useStore } from './context/StoreContext';
+import { useStore } from './context/Store';
 import { lightTheme, darkTheme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
 import Header from './components/Header';

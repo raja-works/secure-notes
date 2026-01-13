@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+
 import { hashPin } from '../utils/crypto';
 
 const StoreContext = createContext();
@@ -35,7 +35,7 @@ function reducer(state, action) {
                 ...state,
                 notes: [
                     {
-                        id: uuidv4(),
+                        id: crypto.randomUUID(),
                         title: '',
                         content: '',
                         type: 'text',

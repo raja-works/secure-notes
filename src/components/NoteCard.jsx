@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaLock, FaPen, FaFileAlt, FaTrash, FaPenNib } from 'react-icons/fa';
-import { useStore } from '../context/StoreContext';
+import { useStore } from '../context/Store';
 
 const Card = styled(motion.div)`
   ${({ theme }) => theme.glass.card};

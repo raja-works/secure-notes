@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useRef, useState } from 'react';
 import { FaSearch, FaLock, FaUnlock, FaCloudDownloadAlt, FaCloudUploadAlt, FaPlus, FaMoon, FaSun, FaFont } from 'react-icons/fa';
-import { useStore } from '../context/StoreContext';
+import { useStore } from '../context/Store';
 import { exportBackup, importBackup } from '../utils/backup';
 
 const HeaderContainer = styled.header`

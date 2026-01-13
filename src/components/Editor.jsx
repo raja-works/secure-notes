@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
 import { FaTimes, FaSave, FaLock, FaUnlock, FaEraser, FaTrash, FaPen, FaCircle } from 'react-icons/fa';
-import { useStore } from '../context/StoreContext';
+import { useStore } from '../context/Store';
 
 const Overlay = styled(motion.div)`
   position: fixed;

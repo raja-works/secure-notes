@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaLock } from 'react-icons/fa';
-import { useStore } from '../context/StoreContext';
+import { useStore } from '../context/Store';
 import { hashPin } from '../utils/crypto';
 
 const Overlay = styled(motion.div)`
