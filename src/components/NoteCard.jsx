@@ -37,21 +37,43 @@ const Title = styled.h3`
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap; // Max one line
+  text-align: center; // Centered
+  width: 100%;
 `;
 
-const Preview = styled.p`
+const Preview = styled.div`
   font-size: 0.9rem;
   color: ${({ theme }) => theme.colors.textSecondary};
   margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+`;
+
+const TextPreview = styled.p`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; // Max one line
+    text-align: center;
+    width: 100%;
+    margin: 0;
+`;
+
+const InkPreviewContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    svg {
+        max-width: 100%;
+        max-height: 100%;
+    }
 `;
 
 const Meta = styled.div`
@@ -127,11 +149,70 @@ export default function NoteCard({ note, onClick }) {
             ) : (
                 <Preview>
                     {isInk ? (
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px', fontStyle: 'italic' }}>
-                            <FaPenNib /> Ink Content
-                        </span>
+                        <InkPreviewContainer>
+                            {/* Render Ink SVG */}
+                            {(() => {
+                                const strokes = Array.isArray(note.content) ? note.content : [];
+                                if (strokes.length === 0) return <span style={{ fontStyle: 'italic', opacity: 0.5 }}>Empty Sketch</span>;
+
+                                // Calculate bounds to frame the SVG
+                                let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+                                strokes.forEach(s => {
+                                    const points = Array.isArray(s) ? s : s.points;
+                                    points.forEach(p => {
+                                        if (p.x < minX) minX = p.x;
+                                        if (p.y < minY) minY = p.y;
+                                        if (p.x > maxX) maxX = p.x;
+                                        if (p.y > maxY) maxY = p.y;
+                                    });
+                                });
+
+                                // Add padding
+                                const padding = 20;
+                                const width = maxX - minX + padding * 2;
+                                const height = maxY - minY + padding * 2;
+                                const viewBox = `${minX - padding} ${minY - padding} ${width || 100} ${height || 100}`;
+
+                                return (
+                                    <svg viewBox={viewBox} style={{ pointerEvents: 'none' }}>
+                                        {strokes.map((stroke, i) => {
+                                            const points = Array.isArray(stroke) ? stroke : stroke.points;
+                                            const color = stroke.color || '#fff';
+                                            const width = stroke.width || 2;
+                                            const isEraser = stroke.isEraser;
+
+                                            // If eraser, we might want to skip or draw white? 
+                                            // In preview, background is card background.
+                                            // Ideally we should match composite operation, but SVG doesn't support destination-out easily without masks.
+                                            // For simple preview, maybe just skip eraser strokes or draw them as background color?
+                                            // Let's draw as transparent/background color if eraser, largely ignoring it for preview simplicity or approximating it.
+                                            if (isEraser) return null;
+
+                                            // Simple path construction
+                                            const d = points.reduce((acc, p, index) => {
+                                                return acc + (index === 0 ? `M ${p.x} ${p.y}` : ` L ${p.x} ${p.y}`);
+                                            }, '');
+
+                                            return (
+                                                <path
+                                                    key={i}
+                                                    d={d}
+                                                    stroke={color}
+                                                    strokeWidth={width}
+                                                    fill="none"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            );
+                                        })}
+                                    </svg>
+                                );
+                            })()}
+                        </InkPreviewContainer>
                     ) : (
-                        note.content || "No content"
+                        <TextPreview>
+                            {note.content || "No content"}
+                        </TextPreview>
                     )}
                 </Preview>
             )}
