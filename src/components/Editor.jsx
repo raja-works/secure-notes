@@ -99,6 +99,7 @@ const Button = styled.button`
 
 const ToolsContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 16px;
   padding: 8px 16px;
@@ -332,6 +333,8 @@ export default function Editor({ note, onClose }) {
     };
 
     const handleClear = () => {
+        // add confirmation dialogue
+        if (!confirm('Are you sure you want to clear the canvas?')) return;
         const ctx = canvasRef.current.getContext('2d');
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         strokes.current = [];
@@ -393,10 +396,25 @@ export default function Editor({ note, onClose }) {
                 >
                     <Toolbar>
                         <TitleInput
+                            id="title"
                             value={title}
                             onChange={e => setTitle(e.target.value)}
                             placeholder="Note Title"
                         />
+                        <ActionGroup>
+                            <Button onClick={() => setIsLocked(!isLocked)} title={isLocked ? "Unlock Note" : "Lock Note"}>
+                                {isLocked ? <FaLock color="#ef4444" /> : <FaUnlock />}
+                            </Button>
+                            <Button onClick={handleDelete} title="Delete Note">
+                                <FaTrash color="#ef4444" />
+                            </Button>
+                            <Button variant="primary" onClick={handleSave}>
+                                <FaSave />
+                            </Button>
+                            <Button onClick={onClose}>
+                                <FaTimes />
+                            </Button>
+                        </ActionGroup>
 
                         {note.type === 'ink' && (
                             <ToolsContainer>
@@ -449,20 +467,6 @@ export default function Editor({ note, onClose }) {
                             </ToolsContainer>
                         )}
 
-                        <ActionGroup>
-                            <Button onClick={() => setIsLocked(!isLocked)} title={isLocked ? "Unlock Note" : "Lock Note"}>
-                                {isLocked ? <FaLock color="#ef4444" /> : <FaUnlock />}
-                            </Button>
-                            <Button onClick={handleDelete} title="Delete Note">
-                                <FaTrash color="#ef4444" />
-                            </Button>
-                            <Button variant="primary" onClick={handleSave}>
-                                <FaSave />
-                            </Button>
-                            <Button onClick={onClose}>
-                                <FaTimes />
-                            </Button>
-                        </ActionGroup>
                     </Toolbar>
 
                     <ContentArea>
