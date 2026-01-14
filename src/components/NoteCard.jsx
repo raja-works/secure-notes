@@ -7,7 +7,8 @@ const Card = styled(motion.div)`
   ${({ theme }) => theme.glass.card};
   padding: 20px;
   border-radius: 16px;
-  min-height: 180px;
+  border-radius: 16px;
+  height: 260px; /* Fixed height for uniformity */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -69,10 +70,14 @@ const InkPreviewContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    padding: 8px; /* Add some padding inside preview area */
     
     svg {
         max-width: 100%;
         max-height: 100%;
+        width: auto;
+        height: auto;
     }
 `;
 

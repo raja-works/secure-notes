@@ -23,3 +23,12 @@ minor updates:
 1. clicking the cursor outside the note editor, makes the note makes note not saved.  implement auto save which applies to sketch also
 2. implement the pointer tip to realise the brush size
 
+Minor updates and fixes for features 2.0
+Editor:
+1. in mobile view the color swatch is hidden
+2. Clear and delete buttons are in distinguishable add a different icon for clear.
+3. move the close, save, delete, lock buttons to top right corner
+4. move the clear button to the drawing tools bar and make the drawing tool bar mobile friendly.
+Notes view:
+1. make all notes in same height
+2. resize the preview image to fit the note card

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
-import { FaTimes, FaSave, FaLock, FaUnlock, FaEraser, FaTrash, FaPen, FaCircle } from 'react-icons/fa';
+import { FaTimes, FaSave, FaLock, FaUnlock, FaEraser, FaTrash, FaPen, FaCircle, FaBroom } from 'react-icons/fa';
 import { useStore } from '../context/Store';
 
 const Overlay = styled(motion.div)`
@@ -33,14 +33,19 @@ const EditorContainer = styled(motion.div)`
 `;
 
 const Toolbar = styled.div`
-  padding: 16px;
+  padding: 12px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(15, 23, 42, 0.5); // Slightly transparent
+  background: rgba(15, 23, 42, 0.5);
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px;
+  
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const TitleInput = styled.input`
@@ -62,6 +67,12 @@ const ActionGroup = styled.div`
   display: flex;
   gap: 12px;
   align-items: center;
+  margin-left: auto;
+  
+  @media (max-width: 600px) {
+    margin-left: 0;
+    justify-content: flex-end;
+  }
 `;
 
 const Button = styled.button`
@@ -93,6 +104,15 @@ const ToolsContainer = styled.div`
   padding: 8px 16px;
   background: rgba(0,0,0,0.2);
   border-radius: 8px;
+  overflow-x: auto;
+  max-width: 100%;
+  
+  /* Hide scrollbar for cleaner UI */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 const ColorSwatch = styled.div`
@@ -395,6 +415,10 @@ export default function Editor({ note, onClose }) {
                                     <FaEraser />
                                 </Button>
 
+                                <Button onClick={handleClear} title="Clear Canvas">
+                                    <FaBroom />
+                                </Button>
+
                                 <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.2)' }}></div>
 
                                 <input
@@ -426,11 +450,6 @@ export default function Editor({ note, onClose }) {
                         )}
 
                         <ActionGroup>
-                            {note.type === 'ink' && (
-                                <Button onClick={handleClear} title="Clear Canvas">
-                                    <FaTrash />
-                                </Button>
-                            )}
                             <Button onClick={() => setIsLocked(!isLocked)} title={isLocked ? "Unlock Note" : "Lock Note"}>
                                 {isLocked ? <FaLock color="#ef4444" /> : <FaUnlock />}
                             </Button>
@@ -438,7 +457,7 @@ export default function Editor({ note, onClose }) {
                                 <FaTrash color="#ef4444" />
                             </Button>
                             <Button variant="primary" onClick={handleSave}>
-                                <FaSave /> Save
+                                <FaSave />
                             </Button>
                             <Button onClick={onClose}>
                                 <FaTimes />
